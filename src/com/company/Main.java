@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -16,7 +18,7 @@ public class Main {
 
         harry = harry.toLowerCase().replaceAll("[^a-z ]", " ");
 
-    /*    System.out.println(harry.substring(0, 200));*/
+        /*    System.out.println(harry.substring(0, 200));*/
 
         String[] wordsArray = harry.split(" +");
 
@@ -35,7 +37,19 @@ public class Main {
         }
         map.entrySet().stream().forEach(item -> {
             if (item.getValue() == 111)
+                /*System.out.println(item.getKey() + " - " + item.getValue())*/ ;
+        });
+        final Map<String, Integer> newmap = map.entrySet()
+                .stream()
+                .sorted((Map.Entry.<String, Integer>comparingByValue().reversed()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+        newmap.entrySet().stream().forEach(item -> {
+            if (item.getValue() >= 100)
                 System.out.println(item.getKey() + " - " + item.getValue());
         });
     }
 }
+
+
+// .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
